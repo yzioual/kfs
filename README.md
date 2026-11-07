@@ -1,2 +1,1 @@
-# kfs
-Kernel Fro Scratch.
+# Kernel From Scratch
