@@ -31,9 +31,8 @@ $(OBJ_DIR)/%.c.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(ISO): $(NAME) grub.cfg
-	mkdir -p iso/boot/grub && cp $(NAME) iso/boot && cp grub.cfg /iso/boot/grub/ && \
-		grub-mkrescue -o $(ISO) iso
+$(ISO): $(NAME)
+	mkdir -p iso/boot/grub && cp $(NAME) iso/boot && grub-mkrescue -o $(ISO) iso
 
 run: $(ISO)
 	qemu-system-i386 -cdrom $(ISO)
