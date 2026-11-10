@@ -1,11 +1,21 @@
 #include "vga.h"
 #include "types.h"
 #include "string.h"
+#include "io.h"
 
 static u16 *const vga_buf = (u16 *)VGA_ADDR;
 static size_t row;
 static size_t col;
 static u8 color = 0x0F;
+
+static void vga_update_cursor(void)
+{
+    u16 pos = row * VGA_WIDTH + col;
+    outb(0x3D4, 0x0F);
+    outb(0x3D5, pos & 0xFF);
+    outb(0x3D4, 0x0E);
+    outb(0x3D5, (pos >> 8) & 0xFF);
+}
 
 static inline u16 vga_entry(char c, u8 attr)
 {
@@ -40,6 +50,7 @@ void vga_putchar(char c)
 		vga_scroll();
 		row = VGA_HEIGHT - 1;
 	}
+	vga_update_cursor();
 }
 
 void vga_puts(const char *s)

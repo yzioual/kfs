@@ -14,7 +14,6 @@ typedef enum e_vga_color {
 } t_vga_color;
 
 void vga_set_color(t_vga_color fg, t_vga_color bg); 
-
 void vga_init(void);
 void vga_putchar(char c);
 void vga_puts(const char *s);
