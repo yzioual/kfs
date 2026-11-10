@@ -7,8 +7,9 @@ LD       := ld
 
 ASFLAGS  := -f elf32
 CFLAGS   := -m32 -ffreestanding -fno-builtin -fno-stack-protector \
-            -nostdlib -nodefaultlibs -Wall -Wextra -Werror -Iinclude
-LDFLAGS  := -m elf_i386 -T linker.ld -nostdlib
+	-nostdlib -nodefaultlibs -Wall -Wextra -Werror -Iinclude -MMD -MP
+
+LDFLAGS  := -m elf_i386 -T linker.ld -nostdlib --no-warn-rwx-segments
 
 SRC_DIR  := src
 OBJ_DIR  := build
@@ -49,4 +50,6 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all run clean fclean re
+-include $(DEPS)
+
+.PHONY: all run check-header clean fclean re
