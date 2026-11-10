@@ -37,6 +37,9 @@ $(ISO): $(NAME)
 run: $(ISO)
 	qemu-system-i386 -cdrom $(ISO)
 
+check-header:
+	grub-file --is-x86-multiboot kernel.bin && echo "multiboot OK"
+
 clean:
 	rm -rf $(OBJ_DIR) iso/
 
