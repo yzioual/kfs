@@ -67,6 +67,7 @@ void vga_init(void)
 
 	for (int i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++)
 		vga_buf[i] = vga_entry(' ', VGA_WHITE_ON_BLACK);
+	vga_update_cursor();
 }
 
 void vga_set_color(t_vga_color fg, t_vga_color bg)
