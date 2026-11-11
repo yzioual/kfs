@@ -141,10 +141,10 @@ static int	pk_dispatch(const char *fmt, va_list args)
 		return (pk_put_unsigned(va_arg(args, unsigned int)));
 	if (*fmt == 'x')
 		return (pk_put_hex(va_arg(args, unsigned int),
-			"0123456789abcdef"));
+					"0123456789abcdef"));
 	if (*fmt == 'X')
 		return (pk_put_hex(va_arg(args, unsigned int),
-			"0123456789ABCDEF"));
+					"0123456789ABCDEF"));
 	if (*fmt == 'p')
 		return (pk_put_ptr(va_arg(args, void *)));
 	return (0);
