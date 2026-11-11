@@ -6,6 +6,8 @@
 #define VGA_HEIGHT 25
 #define VGA_WHITE_ON_BLACK 0x0F
 
+#include "types.h"
+
 typedef enum e_vga_color {
     VGA_BLACK = 0,  VGA_BLUE,        VGA_GREEN,       VGA_CYAN,
     VGA_RED,        VGA_MAGENTA,     VGA_BROWN,       VGA_LIGHT_GREY,
@@ -17,5 +19,7 @@ void vga_set_color(t_vga_color fg, t_vga_color bg);
 void vga_init(void);
 void vga_putchar(char c);
 void vga_puts(const char *s);
+void vga_save(u16 *buf, size_t *r, size_t *c, u8 *col_attr);
+void vga_restore(const u16 *buf, size_t r, size_t c, u8 col_attr);
 
 #endif

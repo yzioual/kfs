@@ -33,7 +33,15 @@ static void vga_scroll(void)
 
 void vga_putchar(char c)
 {
-	if (c == '\n') {
+	if (c == '\b') {
+		if (col > 0)
+			col--;
+		else if (row > 0) {
+			row--;
+			col = VGA_WIDTH - 1;
+		}
+		vga_buf[row * VGA_WIDTH + col] = vga_entry(' ', color);
+	} else if (c == '\n') {
 		col = 0;
 		row += 1;
 	} else {
@@ -73,4 +81,21 @@ void vga_init(void)
 void vga_set_color(t_vga_color fg, t_vga_color bg)
 {
 	color = ((bg & 0x07) << 4) | (fg & 0x0F);
+}
+
+void vga_save(u16 *buf, size_t *r, size_t *c, u8 *col_attr)
+{
+	ft_memcpy(buf, vga_buf, (VGA_WIDTH * VGA_HEIGHT * sizeof(u16)));
+	*r = row;
+	*c = col;
+	*col_attr = color;
+}
+
+void vga_restore(const u16 *buf, size_t r, size_t c, u8 col_attr)
+{
+	ft_memcpy(vga_buf, buf, (VGA_WIDTH * VGA_HEIGHT * sizeof(u16)));
+	row = r;
+	col = c;
+	color = col_attr;
+	vga_update_cursor();
 }
