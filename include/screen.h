@@ -3,6 +3,9 @@
 
 #define SCREEN_COUNT 3
 
+#include "types.h"
+#include "vga.h"
+
 typedef struct s_screen {
     u16    buf[VGA_WIDTH * VGA_HEIGHT];
     size_t row;

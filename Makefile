@@ -34,7 +34,8 @@ $(OBJ_DIR)/%.c.o: $(SRC_DIR)/%.c
 
 $(ISO): $(NAME)
 	mkdir -p iso/boot/grub && cp $(NAME) iso/boot && cp grub.cfg iso/boot/grub/ \
-		 && grub-mkrescue -o $(ISO) iso
+		&& grub-mkrescue -d /usr/lib/grub/i386-pc --compress=xz \
+		 --fonts= --locales= --themes=  -o $(ISO) iso
 
 run: $(ISO)
 	qemu-system-i386 -cdrom $(ISO)
@@ -52,4 +53,4 @@ re: fclean all
 
 -include $(DEPS)
 
-.PHONY: all run check-header clean fclean re
+.PHONY: all run check-header clean fclean re iso

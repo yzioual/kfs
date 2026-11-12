@@ -1,6 +1,7 @@
 #include "io.h"
-#include "kb.h"
+#include "keyboard.h"
 #include "printk.h"
+#include "screen.h"
 
 #define KEYBOARD_DATA			0x60
 #define KEYBOARD_STATUS			0x64
@@ -10,6 +11,8 @@
 #define RSHIFT_IS_RELEASED		0xAA
 #define LSHIFT_IS_RELEASED		0xB6
 #define CAPS_TOGGLE			0x3A
+#define ALT_PRESSED			0x38
+#define ALT_RELEASED			0xB8
 
 static const char us_keymap[58] = {
     0, 27, '1','2','3','4','5','6','7','8','9','0','-','=','\b','\t',
@@ -27,6 +30,7 @@ static const char us_keymap_shift[58] = {
 
 static int shift;
 static int caps_lock;
+static int alt;
 
 static u8 keyboard_read_scancode(void)
 {
@@ -53,6 +57,14 @@ char keyboard_getchar(void)
 	if (scancode == CAPS_TOGGLE)
 	{
 		caps_lock = !caps_lock;
+		return 0;
+	}
+
+	if (scancode == ALT_PRESSED) { alt = 1; return 0; }
+	if (scancode == ALT_RELEASED) { alt = 0; return 0; }
+	
+	if (alt && scancode >= 0x3B && scancode <= 0x3D) {
+		screen_switch(scancode - 0x3B);
 		return 0;
 	}
 
