@@ -122,31 +122,31 @@ static int	pk_put_ptr(void *ptr)
 	return (count);
 }
 
-static int	pk_dispatch(const char *fmt, va_list args)
+static int	pk_dispatch(const char *fmt, va_list *args)
 {
 	char	c;
 
 	if (*fmt == 'c')
 	{
-		c = (char)va_arg(args, int);
+		c = (char)va_arg(*args, int);
 		return (pk_putchar(c));
 	}
 	if (*fmt == '%')
 		return (pk_putchar('%'));
 	if (*fmt == 's')
-		return (pk_puts(va_arg(args, char *)));
+		return (pk_puts(va_arg(*args, char *)));
 	if (*fmt == 'd' || *fmt == 'i')
-		return (pk_putnbr(va_arg(args, int)));
+		return (pk_putnbr(va_arg(*args, int)));
 	if (*fmt == 'u')
-		return (pk_put_unsigned(va_arg(args, unsigned int)));
+		return (pk_put_unsigned(va_arg(*args, unsigned int)));
 	if (*fmt == 'x')
-		return (pk_put_hex(va_arg(args, unsigned int),
+		return (pk_put_hex(va_arg(*args, unsigned int),
 					"0123456789abcdef"));
 	if (*fmt == 'X')
-		return (pk_put_hex(va_arg(args, unsigned int),
+		return (pk_put_hex(va_arg(*args, unsigned int),
 					"0123456789ABCDEF"));
 	if (*fmt == 'p')
-		return (pk_put_ptr(va_arg(args, void *)));
+		return (pk_put_ptr(va_arg(*args, void *)));
 	return (0);
 }
 
@@ -166,7 +166,7 @@ int	printk(const char *format, ...)
 			format++;
 			if (*format == '\0')
 				break ;
-			count += pk_dispatch(format, args);
+			count += pk_dispatch(format, &args);
 		}
 		else
 		{

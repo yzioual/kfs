@@ -11,6 +11,8 @@ align 4
 
 section .bss
 align 16
+global stack_bottom
+global stack_top
 stack_bottom:
 	resb 16384	; reserve 16 KB
 stack_top:
@@ -22,6 +24,7 @@ extern kmain
 _start:
 	cli
 	mov esp, stack_top
+	xor ebp, ebp
 	push ebx
 	push eax
 	call kmain

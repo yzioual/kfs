@@ -78,9 +78,24 @@ void vga_init(void)
 	vga_update_cursor();
 }
 
+void vga_clear(void)
+{
+	row = 0;
+	col = 0;
+
+	for (int i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++)
+		vga_buf[i] = vga_entry(' ', color);
+	vga_update_cursor();
+}
+
 void vga_set_color(t_vga_color fg, t_vga_color bg)
 {
 	color = ((bg & 0x07) << 4) | (fg & 0x0F);
+}
+
+u8 vga_get_color(void)
+{
+	return color;
 }
 
 void vga_save(u16 *buf, size_t *r, size_t *c, u8 *col_attr)

@@ -27,3 +27,8 @@ void screen_switch(int n)
 	current = n;
 	vga_restore(screens[current].buf, screens[current].row, screens[current].col, screens[current].color);
 }
+
+int screen_get_current(void)
+{
+	return current;
+}

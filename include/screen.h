@@ -15,5 +15,6 @@ typedef struct s_screen {
 
 void screen_init(void);
 void screen_switch(int n);
+int  screen_get_current(void);
 
 #endif

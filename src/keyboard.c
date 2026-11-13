@@ -34,14 +34,15 @@ static int alt;
 
 static u8 keyboard_read_scancode(void)
 {
-	(void) shift;
-	(void) caps_lock;
-	(void) us_keymap;
-
 	while (!(inb(KEYBOARD_STATUS) & 1))
 		; // halt until something hits the mailbox!
 
 	return (inb(KEYBOARD_DATA));
+}
+
+int keyboard_has_key(void)
+{
+	return (inb(KEYBOARD_STATUS) & 1);
 }
 
 char keyboard_getchar(void)
@@ -49,10 +50,16 @@ char keyboard_getchar(void)
 	u8 scancode = keyboard_read_scancode();
 
 	if (scancode == RSHIFT_IS_PRESSED || scancode == LSHIFT_IS_PRESSED)
+	{
 		shift = 1;
+		return 0;
+	}
 
 	if (scancode == RSHIFT_IS_RELEASED || scancode == LSHIFT_IS_RELEASED)
+	{
 		shift = 0;
+		return 0;
+	}
 
 	if (scancode == CAPS_TOGGLE)
 	{
@@ -75,4 +82,14 @@ char keyboard_getchar(void)
 		return 0;
 
 	return (shift || caps_lock) ? us_keymap_shift[scancode] : us_keymap[scancode];
+}
+
+char keyboard_getc(void)
+{
+	char c;
+
+	c = 0;
+	while (!c)
+		c = keyboard_getchar();
+	return (c);
 }
